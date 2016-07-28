@@ -1,0 +1,200 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "PlayMMOGame API",
+        "description": "Move your app forward with the PlayMMOGame API",
+        "version": "1.0.0"
+    },
+    "host": "playmogames.com",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/v1",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/auth": {
+            "post": {
+                "summary": "user auth",
+                "description": "User Auth \n",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "query",
+                        "description": "user info",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "game token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An Object of Auth Info",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Auth"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "summary": "User Info Types",
+                "description": "The User info When Our \n",
+                "parameters": [
+                    {
+                        "name": "oauth",
+                        "in": "header",
+                        "description": "user token",
+                        "required": true,
+                        "type": "string",
+                        "format": "double"
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An Array of user",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Profile"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/paymentipn": {
+            "get": {
+                "summary": "Payment IPN",
+                "description": "When Player Payment Success, Our Client Will get your custome payment url,and tell you the player is\ncomplete payment\n",
+                "parameters": [
+                    {
+                        "name": "game",
+                        "in": "query",
+                        "description": "game token info",
+                        "required": true,
+                        "type": "string",
+                        "format": "double"
+                    },
+                    {
+                        "name": "serverid",
+                        "in": "query",
+                        "description": "game server id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "uid",
+                        "in": "query",
+                        "description": "user uid, see /me interface got the uid info",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An payment array",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Profile"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Auth": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "description": "User Auth token info,and you can put it on header to get more info"
+                },
+                "expires": {
+                    "type": "string",
+                    "description": "Au Unix time, the token expires time"
+                }
+            }
+        },
+        "Profile": {
+            "type": "object",
+            "properties": {
+                "uid": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "uid is our user system id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "name of the user name."
+                },
+                "picture": {
+                    "type": "string",
+                    "description": "Image URL of the user avator."
+                },
+                "promo_code": {
+                    "type": "string",
+                    "description": "Promo code of the Uber user."
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
